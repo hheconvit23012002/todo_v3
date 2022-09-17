@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import TodoItem from "../TodoItem/TodoItem";
 import { connect } from 'react-redux'
@@ -11,6 +10,7 @@ function TodoList(props) {
     useEffect(() => {
         props.onCallApiFetchData();
     }, [])
+    
     function handleSort() {
         // console.log('a')
         props.onSortTodo(props.tasks, typeSort)
@@ -26,7 +26,7 @@ function TodoList(props) {
 
         <div>
             <div className="margin-bottom-20">
-                <button type="button" className="btn btn-default btn-sort" onClick={handleSort}>Sort by name</button>
+                <button type="button" className="btn btn-default btn-sort" onClick={() => handleSort()}>Sort by name</button>
 
                 <form className="flex margin-top-20px" onSubmit={(e) => handleSearch(e)}>
                     <div className="form-group cover-input-search">
@@ -50,6 +50,8 @@ function TodoList(props) {
                                 <th>Mã</th>
                                 <th>Tên</th>
                                 <th>Trạng Thái</th>
+                                <th>Mức độ</th>
+                                <th>Deadline</th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
@@ -58,12 +60,12 @@ function TodoList(props) {
                                 onSearch ?
                                     props.listSearch.map((value, index) => {
                                         return (
-                                            <TodoItem key={value.id} index={index + 1} id={value.id} name={value.name} status={value.isDone} />
+                                            <TodoItem key={index} index={index + 1} id={value.id} name={value.name} level={value.level} deadline={value.deadline} status={value.isDone} />
                                         )
                                     }) :
                                     props.tasks.map((value, index) => {
                                         return (
-                                            <TodoItem key={value.id} index={index + 1} id={value.id} name={value.name} status={value.isDone} />
+                                            <TodoItem key={index} index={index + 1} id={value.id} name={value.name} level={value.level} deadline={value.deadline} status={value.isDone} />
                                         )
                                     })
                             }

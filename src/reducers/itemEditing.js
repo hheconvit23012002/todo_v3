@@ -6,6 +6,8 @@ var data = JSON.parse(localStorage.getItem('isItemEdit'))
 var initialState = data ? data : {
     id:null,
     name :'',
+    level:1,
+    deadline:'',
     isDone:false
 }
 

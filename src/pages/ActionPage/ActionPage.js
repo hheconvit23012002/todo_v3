@@ -9,16 +9,24 @@ function ActionPage(props) {
     let param = useParams();
     const [inputText, setInputText] = useState('')
     const [inputCheck, setInputCheck] = useState(false)
+    const [inputLevel, setInputLevel] = useState(1)
+    const [inputDate, setInputDate] = useState("")
     const navigate = useNavigate()
     useEffect(() => {
         if (param.id) {
             setInputText(() => { return props.itemEditing.name })
             setInputCheck(() => { return props.itemEditing.isDone })
+            setInputLevel(() => { return props.itemEditing.level})
+            setInputDate(() => { return props.itemEditing.deadline })
+            // console.log(props.itemEditing.deadline.toString().substring(0, 16))
         } else {
             setInputText('')
             setInputCheck(false)
+            setInputLevel(1)
+            setInputDate("")
         }
     }, [location])
+    
     // useEffect(() => {
     //     async function fetchData() {
     //         if (param.id) {
@@ -38,11 +46,14 @@ function ActionPage(props) {
     const onChange = (e) => {
         if (e.target.type === 'text') {
             setInputText(e.target.value)
-        } else {
+        } else if(e.target.type === "checkbox"){
             setInputCheck(e.target.checked)
-
+        } else if(e.target.type === "datetime-local"){
+            setInputDate(e.target.value)
         }
-
+        else{
+            setInputLevel(e.target.value)
+        }
     }
     async function onSave(e) {
         e.preventDefault();
@@ -53,6 +64,8 @@ function ActionPage(props) {
                     ok = props.onEditItem({
                         id: param.id,
                         name: inputText,
+                        level:inputLevel,
+                        deadline:inputDate,
                         isDone: inputCheck
                     })
                 )
@@ -62,6 +75,8 @@ function ActionPage(props) {
                 resolve(
                     ok = props.onCallApiAddItem({
                         name: inputText,
+                        level:inputLevel,
+                        deadline:inputDate,
                         isDone: inputCheck
                     })
                 )
@@ -113,6 +128,18 @@ function ActionPage(props) {
                         value={inputText}
                     // onChange={this.onChange}
                     />
+                </div>
+                <div className="form-group">
+                    <label>Mức độ: </label>
+                    <select value={inputLevel} onChange={(e) => onChange(e)}>
+                        <option value={1}>Làm ngay</option>
+                        <option value={2}>Từ từ</option>
+                        <option value={3}>Không Làm cũng được</option>
+                    </select>
+                </div>
+                <div className="form-group">
+                    <label>Deadline: </label>
+                    <input type="datetime-local" className="form-control" value={inputDate} onChange={(e) => onChange(e)}></input>
                 </div>
                 <div className="form-group">
                     <label>Trạng Thái: </label>
